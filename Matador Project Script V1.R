@@ -21,13 +21,33 @@ mean(mydata$ranch_acres)
 #Subset data
 gb_conserved <- select(filter(mydata, type == "grassbank"), c(year,grasslands_conserved))
 gb_protected <- select(filter(mydata, type == "grassbank"), c(year,grasslands_protected))
-conserved_v_protected <- select(filter(mydata, type == "grassbank"), c(year,grasslands_protected,grasslands_conserved))
+gb_conserved_protected <- select(filter(mydata, type == "grassbank"), c(year,grasslands_protected,grasslands_conserved))
 
 #Construct plot
 lm(gb_conserved) 
 plot(gb_conserved)
 lm(gb_protected) 
 plot(gb_protected)
-plot(conserved_v_protected$grasslands_protected,conserved_v_protected$grasslands_conserved)
-               
-#write data out
+plot(gb_conserved_protected$grasslands_protected,gb_conserved_protected$grasslands_conserved)
+
+#Construct alternate plot 1
+p <- ggplot(data = gb_conserved_protected, 
+            mapping = aes(x = year, y = grasslands_conserved))+
+            geom_point(alpha=0.2)+
+            geom_smooth()+
+            theme_bw()
+p
+
+#Construct alternate plot 2
+p <- ggplot(data = gb_conserved_protected, 
+            mapping = aes(year))+
+              geom_line(aes(y = grasslands_conserved))+
+              geom_line(aes(y = grasslands_protected))+
+              scale_color_manual(values=c("blue", "green"))+
+              labs(x = "year", y = "acres")
+              theme_bw()
+              #add title
+              #add labels for curves
+p
+
+#####
