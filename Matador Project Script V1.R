@@ -1,7 +1,11 @@
 #Katie Pofahl
 #October 25, 2019
-#This is the V1 script for my project to make summary statistics and a plot
-#for data from Matador Ranch, MT.
+#This is the V1 script for my project to make summative descriptions and a plot
+#for data from Matador Ranch, MT, a grassland conservation program which begain 14 years ago.
+#Conserved lands are lands that the organization has protected in some way through this 
+#program.
+#Protected lands are lands that have some form of permanent protection. This is a new initiative
+#for the program.
 
 #setup
 install.packages("pacman")
@@ -43,11 +47,13 @@ p <- ggplot(data = gb_conserved_protected,
             mapping = aes(year))+
               geom_line(aes(y = grasslands_conserved))+
               geom_line(aes(y = grasslands_protected))+
-              scale_color_manual(values=c("blue", "green"))+
+              geom_smooth(aes(y = grasslands_conserved))+
+              geom_smooth(aes(y = grasslands_protected))+
               labs(x = "year", y = "acres")
               theme_bw()
               #add title
               #add labels for curves
+              #add colors scale_color_manual(values=c("blue", "green"))+
 p
 
 #####

@@ -1,0 +1,25 @@
+#notes to myself
+# $dollar sign indicates variables
+#data frame is built of variables (eg: mydog <- xyz)
+#for variables you can call up data from inside data frame with [row,column/variable]
+# pull up help file for a command/function by putting ? in front (eg: ?which) 
+
+#rserch functions: head, tail, summarise, filter (eg: just matador rows), select (look for blogs)
+
+  #summarise all prairie dog data for example using summarise()
+  
+  
+#format/reshape
+  #create variables sage_grouse and year
+sage_grouse <- 
+  
+  
+  newobject <- mydata %>%
+  filter(Type="matador")
+  
+  #eg: ggplot2(newobject, aes(x=  , y=  , color=  , row=  )
+  gb_conserved_protected
+  
+  #write data out
+  
+  geom_point(alpha=0.2)+
