@@ -10,6 +10,9 @@
 #setup
 install.packages("pacman")
 pacman::p_load("tidyverse") 
+
+#set working directory
+setwd("~/Dropbox (Yale_FES)/Data Science Project Files")
                 
 #read in data
 mydata <- read.csv("Matador Data v2.csv")
@@ -45,16 +48,16 @@ p
 #Construct alternate plot 2 - acres of conserved lands and acres of protected lands over time
 p <- ggplot(data = gb_conserved_protected, 
             mapping = aes(year))+
-              geom_line(aes(y = grasslands_conserved))+
-              geom_line(aes(y = grasslands_protected))+
-              geom_smooth(aes(y = grasslands_conserved))+
-              geom_smooth(aes(y = grasslands_protected))+
-              labs(x = "year", y = "acres")
-              theme_bw()
-              #add title
-              #add labels for curves
-              #add colors scale_color_manual(values=c("blue", "green"))+
+              geom_smooth(aes(y = grasslands_conserved, colour="conserved"))+
+              geom_smooth(aes(y = grasslands_protected, colour="protected"))+
+              scale_colour_manual(values=c("blue", "green"))+
+              labs(x = "year", y = "acres")+
+              labs(title= "Matador Partners: Enrolled Lands")+
+              theme(legend.title = element_blank())+
+              theme(legend.position="bottom")
 p
+
+
 
 #Construct alternate plot 3 - dollars paid per acre of program land (return on investment)
 
