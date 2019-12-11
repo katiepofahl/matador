@@ -1,7 +1,7 @@
 #Katie Pofahl
 #October 25, 2019
-#This is the V1 script for my project to make summative descriptions and a plot
-#for data from Matador Ranch, MT, a grassland conservation program which begain 14 years ago.
+#This is the V1 script for my project to make summative descriptions and a plot for data 
+#from Matador Ranch, MT, a grassland conservation program which begain 14 years ago.
 #Conserved lands are lands that the organization has protected in some way through this 
 #program.
 #Protected lands are lands that have some form of permanent protection. This is a new initiative
@@ -27,14 +27,14 @@ gb_conserved <- select(filter(mydata, type == "grassbank"), c(year,grasslands_co
 gb_protected <- select(filter(mydata, type == "grassbank"), c(year,grasslands_protected))
 gb_conserved_protected <- select(filter(mydata, type == "grassbank"), c(year,grasslands_protected,grasslands_conserved))
 
-#Construct plot
+#Construct test plots
 lm(gb_conserved) 
 plot(gb_conserved)
 lm(gb_protected) 
 plot(gb_protected)
 plot(gb_conserved_protected$grasslands_protected,gb_conserved_protected$grasslands_conserved)
 
-#Construct alternate plot 1
+#Construct alternate plot 1 - acres of conserved lands over time
 p <- ggplot(data = gb_conserved_protected, 
             mapping = aes(x = year, y = grasslands_conserved))+
             geom_point(alpha=0.2)+
@@ -42,7 +42,7 @@ p <- ggplot(data = gb_conserved_protected,
             theme_bw()
 p
 
-#Construct alternate plot 2
+#Construct alternate plot 2 - acres of conserved lands and acres of protected lands over time
 p <- ggplot(data = gb_conserved_protected, 
             mapping = aes(year))+
               geom_line(aes(y = grasslands_conserved))+
@@ -55,5 +55,7 @@ p <- ggplot(data = gb_conserved_protected,
               #add labels for curves
               #add colors scale_color_manual(values=c("blue", "green"))+
 p
+
+#Construct alternate plot 3 - dollars paid per acre of program land (return on investment)
 
 #####
