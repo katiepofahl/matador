@@ -22,20 +22,22 @@ mydata <- read.csv("Matador Data v2.csv")
 #explore
 head(mydata)
 filter(mydata, type == "matador")
-filter(mydata, type == "grassbank")
-mean(mydata$ranch_acres)
+g <- filter(mydata, type == "grassbank")
+mean(g$ranch_acres)
 
 #Subset data
 gb_conserved <- select(filter(mydata, type == "grassbank"), c(year,grasslands_conserved))
 gb_protected <- select(filter(mydata, type == "grassbank"), c(year,grasslands_protected))
-gb_conserved_protected <- select(filter(mydata, type == "grassbank"), c(year,grasslands_protected,grasslands_conserved))
+gb_conserved_protected <- select(filter(mydata, type == "grassbank"), 
+      c(year,grasslands_protected,grasslands_conserved))
 
 #Construct test plots
 lm(gb_conserved) 
 plot(gb_conserved)
 lm(gb_protected) 
 plot(gb_protected)
-plot(gb_conserved_protected$grasslands_protected,gb_conserved_protected$grasslands_conserved)
+plot(gb_conserved_protected$grasslands_protected,
+     gb_conserved_protected$grasslands_conserved)
 
 #Construct alternate plot 1 - acres of conserved lands over time
 p <- ggplot(data = gb_conserved_protected, 
@@ -48,17 +50,19 @@ p
 #Construct alternate plot 2 - acres of conserved lands and acres of protected lands over time
 p <- ggplot(data = gb_conserved_protected, 
             mapping = aes(year))+
-              geom_smooth(aes(y = grasslands_conserved, colour="conserved"))+
-              geom_smooth(aes(y = grasslands_protected, colour="protected"))+
-              scale_colour_manual(values=c("blue", "green"))+
-              labs(x = "year", y = "acres")+
-              labs(title= "Matador Partners: Enrolled Lands")+
-              theme(legend.title = element_blank())+
-              theme(legend.position="bottom")
+            geom_smooth(aes(y = grasslands_conserved, colour="conserved"))+
+            geom_smooth(aes(y = grasslands_protected, colour="protected"))+
+            scale_colour_manual(values=c("blue", "green"))+
+            labs(x = "year", y = "acres", title= "Matador Partners: Enrolled Lands", 
+              caption="Source: TNC Montana")+
+            theme(legend.position="top", legend.title = element_blank())
 p
 
-
-
 #Construct alternate plot 3 - dollars paid per acre of program land (return on investment)
+mydata %>% 
+  mutate(cost_per_acre = discounts/(approved_management+grasslands_conserved+
+    grasslands_protected+prairie_dog))
+
+
 
 #####
