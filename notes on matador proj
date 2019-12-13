@@ -1,4 +1,25 @@
 #notes to myself
+
+Cleaning original matador data sheet to create grassbank partner line plot over time
+- make a copy of original 
+- create one row for column names, delete unnecessary objects, remove totals, create consistent column names (in excel)
+- save each sheet as .csv (eg: data10.csv)
+- read in data to R using read.csv
+- in each object create a year variable data10$year <- 2010
+- rbind.fill in plry to row bind data sheets (this will create columns for all unique column names)
+- rename column names using colnames(dataframe) <- c("a", "b" etc - put in all of the column names I want)
+- SUCCESS!
+- to create plot in base r: 
+plot(conserved_area ~ year, data = mydata, type = "n")
+lines(conserved_area ~ year, data = mydata[mydata$landowner == "A",])
+**copy paste the line above for each landowner
+
+for (i in 1:length(list.files())){
+
+}
+
+
+
 # $dollar sign indicates variables
 #data frame is built of variables (eg: mydog <- xyz)
 #for variables you can call up data from inside data frame with [row,column/variable]
