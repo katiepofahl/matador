@@ -10,8 +10,10 @@
 #for the program.
 
 #setup
-install.packages("pacman")
-pacman::p_load("tidyverse") 
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse,
+               readxl,
+               plyr)
 
 #set working directory
 setwd("~/Dropbox (Yale_FES)/Data Science Project Files")
@@ -99,12 +101,8 @@ p
 ggsave(filename = "EDoutput_KP_ROI.png",
        plot = p,device = "png",
        width = 5,height = 6,units = "in",dpi = 300)
-#INDIVIDUAL DATA
 
-#setup
-install.packages("readxl")
-install.packages("plyr")
-library("plyr")
+#INDIVIDUAL DATA
 
 #read in data sheets from excel and add year
 data18 <- readxl::read_excel("Matador Data v3.xlsx", sheet = 1)
@@ -185,7 +183,7 @@ subset1 <- subset(mydata3, landowner == "S" | landowner == "N"| landowner == "A"
                   | landowner == "K" | landowner == "L" | landowner == "CC" 
                   | landowner == "Z" | landowner == "DD" | landowner == "D" | landowner == "T"
                   | landowner == "V" | landowner == "W" | landowner == "X" | landowner == "BB")
-                 
+
 p <- ggplot(data = subset1, 
             mapping = aes(x=year, y=enrolled_acres, color=landowner))+
   geom_line() +
