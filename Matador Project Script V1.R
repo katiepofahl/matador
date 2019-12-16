@@ -1,7 +1,9 @@
 #Katie Pofahl
-#October 25, 2019
-#This is the V1 script for my project to make summative descriptions and a plot for data 
-#from Matador Ranch, MT, a grassland conservation program which begain 14 years ago.
+#December 16, 2019
+#This is the script for my project to explore data from Matador Ranch, MT, 
+#a grassland conservation program which begain 14 years ago. I have divided this data 
+#in to 2 parts. Aggregate data is for Matador Ranch and a summary of member ranches (grassbank).
+#Individual data shows individual member ranch data over time.
 #Conserved lands are lands that the organization has protected in some way through this 
 #program.
 #Protected lands are lands that have some form of permanent protection. This is a new initiative
@@ -52,18 +54,23 @@ p <- ggplot(data = gb_conserved_protected,
             theme_bw()
 p
 
-#Construct final ggplot 1 - acres of conserved lands and acres of protected lands over time
+#Construct plot 1 - acres of conserved lands and acres of protected lands over time
 p <- ggplot(data = gb_conserved_protected, 
             mapping = aes(x = year))+
             geom_smooth(aes(y = grasslands_conserved, colour="conserved"))+
             geom_smooth(aes(y = grasslands_protected, colour="protected"))+
             scale_colour_manual(values=c("blue", "green"))+
-            labs(x = "year", y = "acres", title= "Matador Partners: Enrolled Lands", 
+            labs(x = "year", y = "acres", title= "Matador Members: Enrolled Lands", 
               caption="Source: TNC Montana")+
             theme(legend.position="top", legend.title = element_blank())
 p
 
-#Construct final ggplot 2 - dollars paid per acre of program land (return on investment)
+#save plot
+ggsave(filename = "EDoutput_KP_enrolled.png",
+       plot = p,device = "png",
+       width = 5,height = 6,units = "in",dpi = 300)
+
+#Construct plot 2 - dollars paid per acre of program land (return on investment)
 
 ##Turn NAs into 0s
 mydata2 <- mydata %>% replace_na(list(approved_management = 0, 
@@ -83,12 +90,15 @@ p <- ggplot(data = mydata2,
             geom_point()+
             scale_colour_manual(values=c("red", "tan"))+
             labs(x = "year", y = "discount per acre ($)", 
-              title= "Matador Partners: Discount Per Acre of Conserved Land", 
+              title= "Matador Members: Discount Per Acre Conserved Land", 
               caption="Source: TNC Montana")+
             theme(legend.position="top", legend.title = element_blank())
 p
 
-
+#save plot
+ggsave(filename = "EDoutput_KP_ROI.png",
+       plot = p,device = "png",
+       width = 5,height = 6,units = "in",dpi = 300)
 #INDIVIDUAL DATA
 
 #setup
@@ -140,7 +150,7 @@ mydata3
 
 ##rename column names and remove unnecessary columns
 colnames(mydata3) <- c("landowner", "ccaa", "ranch_acres", "mgmt_acres", "conserved_acres", "protected_acres",
-                       "pd_acres,", "sg_acres", "fence_miles", "discount", "aum_acres", "workshop", "year", 
+                       "pd_acres", "sg_acres", "fence_miles", "discount", "aum_acres", "workshop", "year", 
                        "a", "b", "c", "d", "e", "f", "g", "h", "i")
 mydata3$a <- NULL
 mydata3$b <- NULL
@@ -166,7 +176,26 @@ tail(mydata3)
 #Write csv
 write.csv(mydata3, "Matador Member Ranches.csv")
 
-#Subset Data
+#Construct plot 3 - individual member ranches enrolled acres over time
+mydata3$enrolled_acres <- (mydata3$mgmt_acres + mydata3$conserved_acres + 
+                          mydata3$protected_acres + mydata3$pd_acres + mydata3$sg_acres)
 
+subset1 <- subset(mydata3, landowner == "S" | landowner == "N"| landowner == "A" 
+                  | landowner == "AA" | landowner == "H" | landowner == "J" | landowner == "O" 
+                  | landowner == "K" | landowner == "L" | landowner == "CC" 
+                  | landowner == "Z" | landowner == "DD" | landowner == "D" | landowner == "T"
+                  | landowner == "V" | landowner == "W" | landowner == "X" | landowner == "BB")
+                 
+p <- ggplot(data = subset1, 
+            mapping = aes(x=year, y=enrolled_acres, color=landowner))+
+  geom_line() +
+  geom_point()+
+  labs(x = "year", y = "enrolled acres", 
+       title= "Individual Enrolled Acres Over Time", 
+       caption="Source: TNC Montana")
+p
 
+ggsave(filename = "EDoutput_KP_members.png",
+       plot = p,device = "png",
+       width = 5,height = 6,units = "in",dpi = 300)
 #####
